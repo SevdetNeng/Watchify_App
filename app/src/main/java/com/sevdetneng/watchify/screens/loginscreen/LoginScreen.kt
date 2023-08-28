@@ -30,6 +30,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.sevdetneng.watchify.components.FormInput
+import com.sevdetneng.watchify.navigation.Screens
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -39,6 +40,10 @@ fun LoginScreen(navController: NavController,
     val passwordValue: MutableState<String> = remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val isLoginState: MutableState<Boolean> = remember { mutableStateOf(true) }
+    val errorMessageState : MutableState<String> = remember{ mutableStateOf("") }
+    val isValid : Boolean = remember(emailValue.value,passwordValue.value){
+        emailValue.value.trim()!="" && passwordValue.value.trim()!=""
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,6 +57,8 @@ fun LoginScreen(navController: NavController,
             style = MaterialTheme.typography.displayMedium
         )
         Spacer(Modifier.height(48.dp))
+        Text(errorMessageState.value, style = MaterialTheme.typography.bodyMedium,
+            color = Color.Red.copy(0.7f))
         FormInput(
             value = emailValue, label = "Email", isPassword = false,
             onAction = KeyboardActions {
@@ -68,23 +75,29 @@ fun LoginScreen(navController: NavController,
         )
         Button(
             onClick = {
-                if (isLoginState.value) {
-                    loginViewModel.loginWithEmailAndPassword(emailValue.value,passwordValue.value,
-                        onSuccess = {
-                            Log.d("Login","Success")
-                        },
-                        onFailure = {
-                            Log.d("Login","Failure")
-                        }
+                if(isValid){
+                    if (isLoginState.value) {
+                        loginViewModel.loginWithEmailAndPassword(emailValue.value,passwordValue.value,
+                            onSuccess = {
+                                navController.navigate(Screens.HomeScreen.name)
+                                Log.d("Login","Success")
+                            },
+                            onFailure = { exc ->
+                                errorMessageState.value = exc
+                                Log.d("Login","Failure")
+                            }
                         )
-                }else{
-                    loginViewModel.createUserWithEmailAndPassword(emailValue.value,
-                        passwordValue.value,
-                        onSuccess = {
-                            Log.d("CreateUser","Success")
-                        }, onFailure = {
-                            Log.d("CreateUser","Failure")
-                        } )
+                    }else{
+                        loginViewModel.createUserWithEmailAndPassword(emailValue.value,
+                            passwordValue.value,
+                            onSuccess = {
+                                navController.navigate(Screens.HomeScreen.name)
+                                Log.d("CreateUser","Success")
+                            }, onFailure = {exc->
+                                errorMessageState.value = exc
+                                Log.d("CreateUser","Failure")
+                            } )
+                    }
                 }
             },
             modifier = Modifier
