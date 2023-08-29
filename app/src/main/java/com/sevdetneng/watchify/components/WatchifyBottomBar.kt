@@ -54,7 +54,7 @@ fun WatchifyBottomBar(navController: NavController,
                     if(screen=="Home"){
                         Icon(imageVector = Icons.Outlined.Home,"Home",
                             modifier = Modifier.size(35.dp),
-                            tint = Color.Blue.copy(0.7f))
+                            tint = Color(0xff47a3d0))
                     }else{
                         Icon(imageVector = Icons.Outlined.Home,"Home",
                             modifier = Modifier.size(35.dp),
@@ -71,7 +71,7 @@ fun WatchifyBottomBar(navController: NavController,
                     if(screen=="Search"){
                         Icon(imageVector = Icons.Outlined.Search,"Home",
                             modifier = Modifier.size(35.dp),
-                            tint = Color.Blue.copy(0.7f))
+                            tint = Color(0xff47a3d0))
                     }else{
                         Icon(imageVector = Icons.Outlined.Search,"Home",
                             modifier = Modifier.size(35.dp),
@@ -86,7 +86,7 @@ fun WatchifyBottomBar(navController: NavController,
                     if(screen=="Favorites"){
                         Icon(imageVector = Icons.Outlined.List,"Home",
                             modifier = Modifier.size(35.dp),
-                            tint = Color.Blue.copy(0.7f))
+                            tint = Color(0xff47a3d0))
                     }else{
                         Icon(imageVector = Icons.Outlined.List,"Home",
                             modifier = Modifier.size(35.dp),
@@ -101,7 +101,7 @@ fun WatchifyBottomBar(navController: NavController,
                     if(screen=="User"){
                         Icon(imageVector = Icons.Outlined.Person,"Home",
                             modifier = Modifier.size(35.dp),
-                            tint = Color.Blue.copy(0.7f))
+                            tint = Color(0xff47a3d0))
                     }else{
                         Icon(imageVector = Icons.Outlined.Person,"Home",
                             modifier = Modifier.size(35.dp),

@@ -2,6 +2,7 @@ package com.sevdetneng.watchify.repository
 
 import com.sevdetneng.watchify.data.ApiResponse
 import com.sevdetneng.watchify.model.ListResponse
+import com.sevdetneng.watchify.model.Movie
 import com.sevdetneng.watchify.network.TmdbApi
 import com.sevdetneng.watchify.utils.Constants.API_KEY
 import javax.inject.Inject
@@ -39,6 +40,19 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
                 ApiResponse.Loading(false)
             }
             ApiResponse.Success(movieList)
+        }catch (e : Exception){
+            ApiResponse.Error(e.message.toString())
+        }
+    }
+
+    suspend fun getMovieById(id : Int) : ApiResponse<Movie> {
+        return try{
+            ApiResponse.Loading(true)
+            val movie = api.getMovieById(id,API_KEY)
+            if(movie.id!=null){
+                ApiResponse.Loading(false)
+            }
+            ApiResponse.Success(movie)
         }catch (e : Exception){
             ApiResponse.Error(e.message.toString())
         }

@@ -36,7 +36,7 @@ fun MovieListCard(movie: ListMovie, onCardClick: (Int) -> Unit) {
             .width(150.dp)
             .clickable {
                 onCardClick(movie.id!!)
-            },
+            }.padding(horizontal = 4.dp),
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
@@ -64,8 +64,8 @@ fun MovieListCard(movie: ListMovie, onCardClick: (Int) -> Unit) {
                 color = Color.Gray
             )
             Text(
-                movie.release_date!!, style = MaterialTheme.typography.bodySmall,
-                color = Color.LightGray
+                movie.release_date!!.trim().split('-')[0], style = MaterialTheme.typography.bodySmall,
+                color = Color.Gray
             )
         }
     }
