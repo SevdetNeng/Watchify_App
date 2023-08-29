@@ -6,13 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.sevdetneng.watchify.navigation.Navigation
 import com.sevdetneng.watchify.ui.theme.WatchifyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,18 +18,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            WatchifyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    MainContent()
-                }
-            }
+
+            Content()
+
         }
     }
 }
+
 
 @Composable
 fun MainContent() {
@@ -43,6 +34,28 @@ fun MainContent() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Navigation()
+    }
+}
+
+@Composable
+fun Content() {
+    WatchifyTheme {
+        // A surface container using the 'background' color from the theme
+        androidx.compose.material.Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = androidx.compose.material.MaterialTheme.colors.background
+        ) {
+            Column(
+                modifier =
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            )
+            {
+                Navigation()
+            }
+
+        }
     }
 }
 

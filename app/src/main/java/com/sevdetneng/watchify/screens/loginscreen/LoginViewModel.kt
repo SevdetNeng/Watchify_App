@@ -6,7 +6,7 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import com.sevdetneng.watchify.model.FbUser
+import com.sevdetneng.watchify.model.firebase.FbUser
 import com.sevdetneng.watchify.utils.Constants.USERS_PATH
 
 class LoginViewModel : ViewModel() {

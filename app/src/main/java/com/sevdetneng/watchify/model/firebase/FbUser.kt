@@ -1,4 +1,4 @@
-package com.sevdetneng.watchify.model
+package com.sevdetneng.watchify.model.firebase
 
 import com.google.firebase.firestore.PropertyName
 
@@ -27,7 +27,7 @@ data class FbUser(
             "email" to email,
             "description" to description,
             "country" to country,
-            "photoUrl" to photoUrl
+            "photo_url" to photoUrl
         )
     }
 }

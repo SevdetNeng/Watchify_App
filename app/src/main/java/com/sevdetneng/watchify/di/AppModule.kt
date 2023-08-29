@@ -1,6 +1,7 @@
 package com.sevdetneng.watchify.di
 
 import com.sevdetneng.watchify.network.TmdbApi
+import com.sevdetneng.watchify.repository.ApiRepository
 import com.sevdetneng.watchify.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -21,4 +22,8 @@ object AppModule {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
         .create(TmdbApi::class.java)
+
+    @Singleton
+    @Provides
+    fun provideApiRepository(api : TmdbApi) = ApiRepository(api)
 }

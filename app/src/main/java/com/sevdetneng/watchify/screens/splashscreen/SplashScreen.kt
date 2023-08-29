@@ -1,7 +1,6 @@
 package com.sevdetneng.watchify.screens.splashscreen
 
 import android.view.animation.OvershootInterpolator
-import androidx.compose.animation.Animatable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -43,7 +42,7 @@ fun SplashScreen(navController: NavController){
         )
         delay(2000)
         if(auth.currentUser?.uid!=null){
-            navController.navigate(Screens.LoginScreen.name)
+            navController.navigate(Screens.HomeScreen.name)
         }else{
             navController.navigate(Screens.LoginScreen.name)
         }
