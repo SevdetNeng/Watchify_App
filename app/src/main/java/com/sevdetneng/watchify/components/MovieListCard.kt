@@ -36,7 +36,9 @@ fun MovieListCard(movie: ListMovie, onCardClick: (Int) -> Unit) {
             .width(150.dp)
             .clickable {
                 onCardClick(movie.id!!)
-            }.padding(horizontal = 4.dp),
+            }
+            //.padding(horizontal = 8.dp)
+        ,
         shape = RectangleShape,
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {

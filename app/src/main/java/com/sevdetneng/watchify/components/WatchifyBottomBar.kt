@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.sevdetneng.watchify.navigation.Screens
 
 @Composable
 fun WatchifyBottomBar(navController: NavController,
@@ -67,13 +68,13 @@ fun WatchifyBottomBar(navController: NavController,
 
 
             Column(){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screens.SearchScreen.name) }) {
                     if(screen=="Search"){
-                        Icon(imageVector = Icons.Outlined.Search,"Home",
+                        Icon(imageVector = Icons.Outlined.Search,"Search",
                             modifier = Modifier.size(35.dp),
                             tint = Color(0xff47a3d0))
                     }else{
-                        Icon(imageVector = Icons.Outlined.Search,"Home",
+                        Icon(imageVector = Icons.Outlined.Search,"Search",
                             modifier = Modifier.size(35.dp),
                             tint = Color.DarkGray)
                     }
@@ -84,11 +85,11 @@ fun WatchifyBottomBar(navController: NavController,
             Column(){
                 IconButton(onClick = { /*TODO*/ }) {
                     if(screen=="Favorites"){
-                        Icon(imageVector = Icons.Outlined.List,"Home",
+                        Icon(imageVector = Icons.Outlined.List,"List",
                             modifier = Modifier.size(35.dp),
                             tint = Color(0xff47a3d0))
                     }else{
-                        Icon(imageVector = Icons.Outlined.List,"Home",
+                        Icon(imageVector = Icons.Outlined.List,"List",
                             modifier = Modifier.size(35.dp),
                             tint = Color.DarkGray)
                     }
@@ -99,11 +100,11 @@ fun WatchifyBottomBar(navController: NavController,
             Column(){
                 IconButton(onClick = { /*TODO*/ }) {
                     if(screen=="User"){
-                        Icon(imageVector = Icons.Outlined.Person,"Home",
+                        Icon(imageVector = Icons.Outlined.Person,"Person",
                             modifier = Modifier.size(35.dp),
                             tint = Color(0xff47a3d0))
                     }else{
-                        Icon(imageVector = Icons.Outlined.Person,"Home",
+                        Icon(imageVector = Icons.Outlined.Person,"Person",
                             modifier = Modifier.size(35.dp),
                             tint = Color.DarkGray)
                     }

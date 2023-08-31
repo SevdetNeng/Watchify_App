@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
 import com.sevdetneng.watchify.model.ListMovie
+import com.sevdetneng.watchify.navigation.Screens
 import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,11 +32,11 @@ fun PopularMovieCarousel(movies: List<ListMovie>?, navController: NavController)
     val scope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxWidth()
-        .height(180.dp)) {
+        .height(220.dp)) {
         HorizontalPager(
             state = pagerState,
             contentPadding = PaddingValues(horizontal = 40.dp),
-            modifier = Modifier.height(180.dp),
+            modifier = Modifier.height(220.dp),
             verticalAlignment = Alignment.CenterVertically,
             pageSpacing = 12.dp
         ) {
@@ -43,7 +44,7 @@ fun PopularMovieCarousel(movies: List<ListMovie>?, navController: NavController)
                 val pageOffset = pagerState.getOffsetFractionForPage(it).absoluteValue
 
                 lerp(
-                    start = 0.8f,
+                    start = 0.9f,
                     stop = 1f,
                     fraction = 1f - pageOffset.coerceIn(0f, 1f)
                 ).also { scale ->
@@ -56,7 +57,9 @@ fun PopularMovieCarousel(movies: List<ListMovie>?, navController: NavController)
                     1f - pageOffset.coerceIn(0f, 1f)
                 )
 
-            }, movie = movies!![it])
+            }, movie = movies!![it]){
+                navController.navigate(Screens.DetailScreen.name+"/$it")
+            }
 
 
         }

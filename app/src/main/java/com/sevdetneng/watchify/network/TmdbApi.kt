@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @Singleton
 interface TmdbApi {
-    @GET("trending/movie/week")
+    @GET("trending/movie/day")
     suspend fun getTrendingMovies(@Query("api_key") apiKey : String) : ListResponse
 
     @GET("movie/top_rated")

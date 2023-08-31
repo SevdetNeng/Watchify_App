@@ -71,10 +71,16 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                 horizontalAlignment = Alignment.Start
             ) {
                 ListTitle(title = "Trending Movies")
-                MovieLazyRow(movies = homeViewModel.trendingResult.value.results!!, navController = navController)
+                if(!homeViewModel.isTrendingLoading.value){
+                    MovieLazyRow(movies = homeViewModel.trendingResult.value.results!!, navController = navController)
+                }
+
 
                 ListTitle(title = "Top-Rated Movies")
-                MovieLazyRow(movies = homeViewModel.topRatedResult.value.results!!, navController = navController)
+                if(!homeViewModel.isTopRatedLoading.value){
+                    MovieLazyRow(movies = homeViewModel.topRatedResult.value.results!!, navController = navController)
+                }
+
 
             }
 
@@ -86,7 +92,9 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
 
 @Composable
 fun MovieLazyRow(movies : List<ListMovie>, navController: NavController){
-    LazyRow(modifier = Modifier.wrapContentHeight()
+    LazyRow(modifier = Modifier.wrapContentHeight(),
+        horizontalArrangement = Arrangement.spacedBy(16.dp)
+
 
     ){
         items(movies){ movie->

@@ -13,6 +13,7 @@ import com.sevdetneng.watchify.screens.detailscreen.MovieDetail
 import com.sevdetneng.watchify.screens.homescreen.HomeScreen
 import com.sevdetneng.watchify.screens.homescreen.HomeViewModel
 import com.sevdetneng.watchify.screens.loginscreen.LoginScreen
+import com.sevdetneng.watchify.screens.searchscreen.SearchScreen
 import com.sevdetneng.watchify.screens.splashscreen.SplashScreen
 
 @Composable
@@ -31,6 +32,10 @@ fun Navigation(){
         composable(Screens.HomeScreen.name){
             HomeScreen(navController = navController,homeViewModel = homeViewModel)
         }
+        composable(Screens.SearchScreen.name){
+            SearchScreen(navController = navController)
+        }
+
 
         composable(Screens.DetailScreen.name + "/{id}", arguments =
             listOf(navArgument("id"){

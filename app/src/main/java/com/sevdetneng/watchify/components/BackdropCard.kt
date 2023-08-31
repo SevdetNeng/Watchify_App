@@ -1,6 +1,7 @@
 package com.sevdetneng.watchify.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,7 +37,10 @@ fun BackdropCard(modifier: Modifier = Modifier, movie : ListMovie, onCardClick :
     Column(){
         Card(modifier = modifier
             .height(180.dp)
-            .width(315.dp),
+            .width(350.dp)
+            .clickable {
+                       onCardClick(movie.id!!)
+            },
             shape = RoundedCornerShape(4.dp),
             colors = CardDefaults.cardColors(containerColor = Color.Black)
 
