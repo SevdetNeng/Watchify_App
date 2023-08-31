@@ -20,4 +20,7 @@ interface TmdbApi {
 
     @GET("movie/{id}")
     suspend fun getMovieById(@Path("id") id : Int,@Query("api_key") apiKey : String) : Movie
+
+    @GET("search/movie")
+    suspend fun searchMovie(@Query("api_key") apiKey: String, @Query("query") query : String) : ListResponse
 }

@@ -28,21 +28,6 @@ import com.sevdetneng.watchify.navigation.Screens
 fun WatchifyBottomBar(navController: NavController,
                       screen : String? = null
                       ){
-//    BottomAppBar(actions = {
-//        IconButton(onClick = { /*TODO*/ }) {
-//            Icon(imageVector = Icons.Default.Home,"Home",
-//                modifier = Modifier.size(35.dp))
-//        }
-//        IconButton(onClick = { /*TODO*/ }) {
-//            Icon(imageVector = Icons.Default.Search,"Home",
-//                modifier = Modifier.size(35.dp))
-//        }
-//        IconButton(onClick = { /*TODO*/ }) {
-//            Icon(imageVector = Icons.Default.Person,"Home",
-//                modifier = Modifier.size(35.dp))
-//        }
-//    }, modifier = Modifier.height(50.dp)
-//        .fillMaxWidth())
 
     BottomAppBar(modifier = Modifier.height(50.dp)) {
         Row(modifier = Modifier.fillMaxSize()
@@ -51,7 +36,7 @@ fun WatchifyBottomBar(navController: NavController,
             horizontalArrangement = Arrangement.SpaceEvenly){
 
             Column(){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screens.HomeScreen.name) }) {
                     if(screen=="Home"){
                         Icon(imageVector = Icons.Outlined.Home,"Home",
                             modifier = Modifier.size(35.dp),

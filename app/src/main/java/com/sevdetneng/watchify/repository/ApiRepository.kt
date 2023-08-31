@@ -57,4 +57,22 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
             ApiResponse.Error(e.message.toString())
         }
     }
+
+    suspend fun searchMovie(query : String) : ApiResponse<ListResponse>{
+        return try{
+            ApiResponse.Loading(true)
+            var movieList = api.searchMovie(API_KEY,query)
+            if(movieList.results!=null){
+                movieList = movieList.copy(results = movieList.results!!.sortedByDescending {
+                    it.popularity
+                })
+            }
+            if(!movieList.results.isNullOrEmpty()){
+                ApiResponse.Loading(false)
+            }
+            ApiResponse.Success(movieList)
+        }catch (e : Exception){
+            ApiResponse.Error(e.message.toString())
+        }
+    }
 }

@@ -73,7 +73,9 @@ fun MovieDetail(
 
             if (movie.id != null) {
                 Column(modifier = Modifier.fillMaxSize()){
-                    MoviePoster(path = movie.backdrop_path!!, movie)
+                    if(movie.backdrop_path!=null){
+                        MoviePoster(path = movie.backdrop_path!!, movie)
+                    }
                     Column(modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp)){
