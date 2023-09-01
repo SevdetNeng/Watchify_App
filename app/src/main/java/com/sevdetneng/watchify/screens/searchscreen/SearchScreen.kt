@@ -45,10 +45,12 @@ import com.sevdetneng.watchify.components.WatchifyBottomBar
 import com.sevdetneng.watchify.model.ListMovie
 import com.sevdetneng.watchify.utils.Constants.IMAGE_BASE_URL
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.text.style.TextOverflow
 import com.sevdetneng.watchify.navigation.Screens
 
@@ -93,13 +95,12 @@ fun SearchScreen(navController: NavController, searchViewModel: SearchViewModel 
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(results.results!!) {
-                        SearchMovieRow(movie = it){
-                            navController.navigate(Screens.DetailScreen.name+ "/$it")
+                        SearchMovieRow(movie = it) {
+                            navController.navigate(Screens.DetailScreen.name + "/$it")
                         }
                     }
                 }
             }
-
         }
     }
 
@@ -109,27 +110,40 @@ fun SearchScreen(navController: NavController, searchViewModel: SearchViewModel 
 @Composable
 fun SearchBar(
     value: MutableState<String>,
-    imeAction: ImeAction = ImeAction.Done,
+    imeAction: ImeAction = ImeAction.Search,
     onAction: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
     label: String,
     onValueChange: (String) -> Unit = {}
 ) {
-    OutlinedTextField(value = value.value, onValueChange = {
-        onValueChange(it)
-    },
+    val focusState = remember { mutableStateOf(false) }
+    OutlinedTextField(
+        value = value.value, onValueChange = {
+            onValueChange(it)
+        },
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(
             imeAction = imeAction,
             keyboardType = keyboardType
         ),
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .onFocusChanged {
+                focusState.value = it.isFocused
+            },
         keyboardActions = onAction,
-        leadingIcon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = "Search") },
-        colors = TextFieldDefaults.colors(focusedTextColor = Color.White,
+        leadingIcon = {
+            Icon(
+                imageVector = if (focusState.value) Icons.Outlined.ArrowBackIos else Icons.Outlined.Search,
+                contentDescription = "Search"
+            )
+        },
+        colors = TextFieldDefaults.colors(
+            focusedTextColor = Color.White,
             unfocusedTextColor = Color.White,
             focusedContainerColor = Color.Transparent,
-            unfocusedContainerColor = Color.Transparent)
+            unfocusedContainerColor = Color.Transparent
+        )
 
 
     )

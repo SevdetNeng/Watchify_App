@@ -39,7 +39,9 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.util.DebugLogger
+import com.sevdetneng.watchify.components.DetailCarousel
 import com.sevdetneng.watchify.components.DetailTopBar
+import com.sevdetneng.watchify.components.PopularMovieCarousel
 import com.sevdetneng.watchify.components.WatchifyBottomBar
 import com.sevdetneng.watchify.model.Movie
 import com.sevdetneng.watchify.utils.Constants
@@ -52,7 +54,9 @@ fun MovieDetail(
 ) {
 
     detailViewModel.getMovieById(id)
+    detailViewModel.getMovieImages(id)
     val movie = detailViewModel.movie.value
+    val images = detailViewModel.images.value
 
     Scaffold(
         topBar = { DetailTopBar(onBackClicked = {
@@ -85,6 +89,32 @@ fun MovieDetail(
 
                         if(movie.belongs_to_collection!=null){
                             CollectionRow(movie = movie)
+
+                        }
+                        if(images.backdrops!=null){
+                            DetailCarousel(backdrops = if(images.backdrops.size<=10) images.backdrops
+                            else images.backdrops.take(10))
+                        }
+                        if(movie.production_companies!!.isNotEmpty()){
+                            Row(modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(), horizontalArrangement = Arrangement.Center){
+                                movie.production_companies!!.forEachIndexed() { index,company ->
+                                    if(index == movie.production_companies.size-1){
+                                        Text(company.name +", ${company.origin_country}",
+                                            color = Color.Gray,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis)
+                                    }else{
+                                        Text(company.name +", ${company.origin_country} - ",
+                                            color = Color.Gray,
+                                            style = MaterialTheme.typography.labelMedium,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis)
+                                    }
+                                }
+                            }
                         }
 
                     }
@@ -228,26 +258,5 @@ fun CollectionRow(movie: Movie){
             }
 
         }
-
-        Row(modifier = Modifier.fillMaxWidth()
-            .wrapContentHeight(), horizontalArrangement = Arrangement.Center){
-            movie.production_companies!!.forEachIndexed() { index,company ->
-                if(index == movie.production_companies.size-1){
-                    Text(company.name +", ${company.origin_country}",
-                        color = Color.Gray,
-                        style = MaterialTheme.typography.labelMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis)
-                }else{
-                    Text(company.name +", ${company.origin_country} - ",
-                        color = Color.Gray,
-                        style = MaterialTheme.typography.labelMedium,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis)
-                }
-            }
-        }
-
     }
-
 }

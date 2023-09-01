@@ -3,6 +3,7 @@ package com.sevdetneng.watchify.repository
 import com.sevdetneng.watchify.data.ApiResponse
 import com.sevdetneng.watchify.model.ListResponse
 import com.sevdetneng.watchify.model.Movie
+import com.sevdetneng.watchify.model.MovieImages
 import com.sevdetneng.watchify.network.TmdbApi
 import com.sevdetneng.watchify.utils.Constants.API_KEY
 import javax.inject.Inject
@@ -74,5 +75,20 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
         }catch (e : Exception){
             ApiResponse.Error(e.message.toString())
         }
+    }
+
+    suspend fun getMovieImages(id : Int) : ApiResponse<MovieImages> {
+        return try{
+            ApiResponse.Loading(true)
+            val images = api.getMovieImages(id, API_KEY)
+            if(images.backdrops!=null){
+                ApiResponse.Loading(false)
+            }
+            ApiResponse.Success(images)
+        }catch (e : Exception){
+            ApiResponse.Error(e.message.toString())
+        }
+
+
     }
 }
