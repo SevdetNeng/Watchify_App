@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DetailTopBar(onBackClicked: () -> Unit = {}, onFavoriteClicked: () -> Unit = {}) {
+fun DetailTopBar(onBackClicked: () -> Unit = {},isFavorite : Boolean, onFavoriteClicked: () -> Unit = {}) {
 
     TopAppBar(backgroundColor = Color.Transparent,
         elevation = 0.dp) {
@@ -36,7 +36,7 @@ fun DetailTopBar(onBackClicked: () -> Unit = {}, onFavoriteClicked: () -> Unit =
             IconButton(onClick = { onFavoriteClicked() }) {
                 Icon(imageVector = Icons.Default.StarBorder,
                     contentDescription = "ArrowBack",
-                    tint = Color.White,
+                    tint = if(isFavorite) Color.Red.copy(0.4f) else Color.White,
                     modifier = Modifier.size(25.dp))
             }
 

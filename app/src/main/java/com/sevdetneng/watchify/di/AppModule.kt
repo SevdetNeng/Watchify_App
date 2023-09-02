@@ -2,6 +2,7 @@ package com.sevdetneng.watchify.di
 
 import com.sevdetneng.watchify.network.TmdbApi
 import com.sevdetneng.watchify.repository.ApiRepository
+import com.sevdetneng.watchify.repository.FbRepository
 import com.sevdetneng.watchify.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -26,4 +27,8 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApiRepository(api : TmdbApi) = ApiRepository(api)
+
+    @Singleton
+    @Provides
+    fun provideFbRepository() = FbRepository()
 }

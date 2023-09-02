@@ -1,5 +1,6 @@
 package com.sevdetneng.watchify.screens.detailscreen
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -39,11 +41,15 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.imageLoader
 import coil.util.DebugLogger
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.sevdetneng.watchify.components.DetailCarousel
 import com.sevdetneng.watchify.components.DetailTopBar
 import com.sevdetneng.watchify.components.PopularMovieCarousel
 import com.sevdetneng.watchify.components.WatchifyBottomBar
+import com.sevdetneng.watchify.model.ListMovie
 import com.sevdetneng.watchify.model.Movie
+import com.sevdetneng.watchify.model.firebase.FbMovie
 import com.sevdetneng.watchify.utils.Constants
 import com.sevdetneng.watchify.utils.Constants.IMAGE_BASE_URL
 
@@ -56,14 +62,32 @@ fun MovieDetail(
     detailViewModel.getMovieById(id)
     detailViewModel.getMovieImages(id)
     val movie = detailViewModel.movie.value
+    val isFavorite = detailViewModel.isFavorite.value
     val images = detailViewModel.images.value
 
     Scaffold(
-        topBar = { DetailTopBar(onBackClicked = {
-            navController.popBackStack()
-        }, onFavoriteClicked = {
-
-        }) },
+        topBar = {
+            DetailTopBar(onBackClicked = {
+                navController.popBackStack()
+            }, onFavoriteClicked = {
+                if (!isFavorite) {
+                    detailViewModel.addMovieToFb(
+                        FbMovie(
+                            title = movie.title!!,
+                            id = id,
+                            posterPath = movie.poster_path,
+                            productionDate = movie.release_date,
+                            rating = movie.vote_average,
+                            userId = Firebase.auth.currentUser?.uid
+                        )
+                    )
+                } else {
+                    detailViewModel.removeMovieFromFb(id)
+                }
+            },
+                isFavorite = isFavorite
+            )
+        },
         bottomBar = { WatchifyBottomBar(navController = navController) },
         containerColor = Color(0xff111820)
     ) { padding ->
@@ -76,42 +100,54 @@ fun MovieDetail(
         ) {
 
             if (movie.id != null) {
-                Column(modifier = Modifier.fillMaxSize()){
-                    if(movie.backdrop_path!=null){
+                Column(modifier = Modifier.fillMaxSize()) {
+                    if (movie.backdrop_path != null) {
                         MoviePoster(path = movie.backdrop_path!!, movie)
                     }
-                    Column(modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)){
-                        Text(movie.overview!!, style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            movie.overview!!, style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        if(movie.belongs_to_collection!=null){
+                        if (movie.belongs_to_collection != null) {
                             CollectionRow(movie = movie)
 
                         }
-                        if(images.backdrops!=null){
-                            DetailCarousel(backdrops = if(images.backdrops.size<=10) images.backdrops
-                            else images.backdrops.take(10))
+                        if (images.backdrops != null) {
+                            DetailCarousel(
+                                backdrops = if (images.backdrops.size <= 10) images.backdrops
+                                else images.backdrops.take(10)
+                            )
                         }
-                        if(movie.production_companies!!.isNotEmpty()){
-                            Row(modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(), horizontalArrangement = Arrangement.Center){
-                                movie.production_companies!!.forEachIndexed() { index,company ->
-                                    if(index == movie.production_companies.size-1){
-                                        Text(company.name +", ${company.origin_country}",
+                        if (movie.production_companies!!.isNotEmpty()) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight(), horizontalArrangement = Arrangement.Center
+                            ) {
+                                movie.production_companies!!.forEachIndexed() { index, company ->
+                                    if (index == movie.production_companies.size - 1) {
+                                        Text(
+                                            company.name + ", ${company.origin_country}",
                                             color = Color.Gray,
                                             style = MaterialTheme.typography.labelMedium,
                                             maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis)
-                                    }else{
-                                        Text(company.name +", ${company.origin_country} - ",
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                    } else {
+                                        Text(
+                                            company.name + ", ${company.origin_country} - ",
                                             color = Color.Gray,
                                             style = MaterialTheme.typography.labelMedium,
                                             maxLines = 1,
-                                            overflow = TextOverflow.Ellipsis)
+                                            overflow = TextOverflow.Ellipsis
+                                        )
                                     }
                                 }
                             }
@@ -160,9 +196,11 @@ fun MoviePoster(path: String, movie: Movie) {
                         .height(200.dp)
                     //.background(brush)
                 ) {
-                    Column(modifier = Modifier.fillMaxSize(),
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
                         verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally) {
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
 
                         Text(
                             movie.title.toString(),
@@ -182,11 +220,13 @@ fun MoviePoster(path: String, movie: Movie) {
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleSmall
                         )
-                        Row(modifier = Modifier.width(200.dp),
-                            horizontalArrangement = Arrangement.Center){
-                            for(genre in movie.genres!!){
+                        Row(
+                            modifier = Modifier.width(200.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            for (genre in movie.genres!!) {
                                 Text(
-                                    genre.name.trim()+" ",
+                                    genre.name.trim() + " ",
                                     color = Color.Gray,
                                     //modifier = Modifier.width(200.dp),
                                     maxLines = 1,
@@ -196,27 +236,37 @@ fun MoviePoster(path: String, movie: Movie) {
                                 )
                             }
                         }
-                        Row(modifier = Modifier.fillMaxWidth(),
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
                             verticalAlignment = Alignment.Bottom,
-                            horizontalArrangement = Arrangement.Center){
-                            Row(verticalAlignment = Alignment.CenterVertically){
-                                Text("TMDB ${"%.1f".format(movie.vote_average)}",
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    "TMDB ${"%.1f".format(movie.vote_average)}",
                                     color = Color.White,
-                                    style = MaterialTheme.typography.bodyMedium)
-                                Icon(imageVector = Icons.Outlined.StarBorder,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Icon(
+                                    imageVector = Icons.Outlined.StarBorder,
                                     contentDescription = "Score",
                                     modifier = Modifier.size(15.dp),
-                                    tint = Color.White)
+                                    tint = Color.White
+                                )
                             }
                             Spacer(modifier = Modifier.width(16.dp))
-                            Row(verticalAlignment = Alignment.CenterVertically){
-                                Text("YOU 3.5",
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(
+                                    "YOU 3.5",
                                     color = Color.White,
-                                    style = MaterialTheme.typography.bodyMedium)
-                                Icon(imageVector = Icons.Outlined.StarBorder,
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Icon(
+                                    imageVector = Icons.Outlined.StarBorder,
                                     contentDescription = "Score",
                                     modifier = Modifier.size(15.dp),
-                                    tint = Color.White)
+                                    tint = Color.White
+                                )
                             }
                         }
                     }
@@ -227,34 +277,50 @@ fun MoviePoster(path: String, movie: Movie) {
 }
 
 @Composable
-fun CollectionRow(movie: Movie){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.Start){
-        Text(movie.belongs_to_collection!!.name,
-            style = MaterialTheme.typography.titleMedium,
-            color = Color.White)
-        Row(modifier = Modifier
+fun CollectionRow(movie: Movie) {
+    Column(
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            movie.belongs_to_collection!!.name,
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.White
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start){
-            Card(modifier = Modifier
-                .height(200.dp)
-                .width(125.dp),
-                shape = RectangleShape){
-                AsyncImage(model = IMAGE_BASE_URL+ movie.belongs_to_collection.poster_path, contentDescription = "Backdrop",
-                    contentScale = ContentScale.FillBounds)
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Card(
+                modifier = Modifier
+                    .height(200.dp)
+                    .width(125.dp),
+                shape = RectangleShape
+            ) {
+                AsyncImage(
+                    model = IMAGE_BASE_URL + movie.belongs_to_collection.poster_path,
+                    contentDescription = "Backdrop",
+                    contentScale = ContentScale.FillBounds
+                )
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Card(modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth(),
-                shape = RectangleShape){
-                AsyncImage(model = IMAGE_BASE_URL+ movie.belongs_to_collection.backdrop_path, contentDescription = "Backdrop",
-                    contentScale = ContentScale.FillBounds)
+            Card(
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth(),
+                shape = RectangleShape
+            ) {
+                AsyncImage(
+                    model = IMAGE_BASE_URL + movie.belongs_to_collection.backdrop_path,
+                    contentDescription = "Backdrop",
+                    contentScale = ContentScale.FillBounds
+                )
             }
 
         }

@@ -5,20 +5,27 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import com.sevdetneng.watchify.data.ApiResponse
 import com.sevdetneng.watchify.model.Backdrop
 import com.sevdetneng.watchify.model.ListMovie
 import com.sevdetneng.watchify.model.Movie
 import com.sevdetneng.watchify.model.MovieImages
+import com.sevdetneng.watchify.model.firebase.FbMovie
 import com.sevdetneng.watchify.repository.ApiRepository
+import com.sevdetneng.watchify.repository.FbRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailViewModel @Inject constructor(val repository: ApiRepository) : ViewModel() {
+class DetailViewModel @Inject constructor(val repository: ApiRepository,val fbRepository: FbRepository) : ViewModel() {
     val movie : MutableState<Movie> = mutableStateOf(Movie())
     val images : MutableState<MovieImages> = mutableStateOf(MovieImages())
+    val isFavorite : MutableState<Boolean> = mutableStateOf(false)
 
     fun getMovieById(id : Int){
         viewModelScope.launch {
@@ -26,6 +33,7 @@ class DetailViewModel @Inject constructor(val repository: ApiRepository) : ViewM
                 when(val response = repository.getMovieById(id)){
                     is ApiResponse.Success -> {
                         movie.value = response.data!!
+                        isFavorite(id)
 
                     }
                     is ApiResponse.Error -> {
@@ -60,6 +68,29 @@ class DetailViewModel @Inject constructor(val repository: ApiRepository) : ViewM
             }catch (e : Exception){
                 e.printStackTrace()
             }
+        }
+    }
+
+    fun addMovieToFb(movie : FbMovie){
+        viewModelScope.launch {
+            fbRepository.addMovie(movie)
+        }
+        isFavorite.value = true
+    }
+    fun removeMovieFromFb(id : Int){
+        viewModelScope.launch {
+            fbRepository.deleteMovie(id,Firebase.auth.currentUser!!.uid)
+        }
+        isFavorite.value = false
+    }
+
+    fun isFavorite(id : Int){
+
+        viewModelScope.launch {
+            val fbMovie = FirebaseFirestore.getInstance().collection("movies").whereEqualTo("id",id)
+                .whereEqualTo("user_id", Firebase.auth.currentUser?.uid).get().await()
+            isFavorite.value = fbMovie.documents.isNotEmpty()
+            Log.d("isFavorite",isFavorite.value.toString())
         }
     }
 

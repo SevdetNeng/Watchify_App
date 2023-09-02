@@ -81,12 +81,14 @@ fun SearchScreen(navController: NavController, searchViewModel: SearchViewModel 
         ) {
             SearchBar(value = searchValueState, label = "Search", onAction = KeyboardActions {
                 if (isValid) {
-                    searchViewModel.searchMovie(searchValueState.value)
+                    //searchViewModel.searchMovie(searchValueState.value)
                 }
                 keyboardController!!.hide()
 
             }) {
                 searchValueState.value = it
+                searchViewModel.searchMovie(searchValueState.value)
+
             }
 
             if (results.results != null) {
@@ -106,11 +108,10 @@ fun SearchScreen(navController: NavController, searchViewModel: SearchViewModel 
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchBar(
     value: MutableState<String>,
-    imeAction: ImeAction = ImeAction.Search,
+    imeAction: ImeAction = ImeAction.Done,
     onAction: KeyboardActions = KeyboardActions.Default,
     keyboardType: KeyboardType = KeyboardType.Text,
     label: String,
