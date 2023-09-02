@@ -11,13 +11,13 @@ import javax.inject.Singleton
 @Singleton
 interface TmdbApi {
     @GET("trending/movie/day")
-    suspend fun getTrendingMovies(@Query("api_key") apiKey : String) : ListResponse
+    suspend fun getTrendingMovies(@Query("api_key") apiKey : String,@Query("page") page : Int) : ListResponse
 
     @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(@Query("api_key") apiKey : String) : ListResponse
+    suspend fun getTopRatedMovies(@Query("api_key") apiKey : String,@Query("page") page : Int) : ListResponse
 
     @GET("movie/now_playing")
-    suspend fun getNowPlayingMovies(@Query("api_key") apiKey : String) : ListResponse
+    suspend fun getNowPlayingMovies(@Query("api_key") apiKey : String,@Query("page") page : Int) : ListResponse
 
     @GET("movie/{id}")
     suspend fun getMovieById(@Path("id") id : Int,@Query("api_key") apiKey : String) : Movie

@@ -9,10 +9,10 @@ import com.sevdetneng.watchify.utils.Constants.API_KEY
 import javax.inject.Inject
 
 class ApiRepository @Inject constructor(val api : TmdbApi) {
-    suspend fun getTrendingMovies() : ApiResponse<ListResponse>{
+    suspend fun getTrendingMovies(page : Int) : ApiResponse<ListResponse>{
         return try{
             ApiResponse.Loading(true)
-            val movieList = api.getTrendingMovies(API_KEY)
+            val movieList = api.getTrendingMovies(API_KEY,page)
             if(!movieList.results.isNullOrEmpty()){
                 ApiResponse.Loading(false)
             }
@@ -21,10 +21,10 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
             ApiResponse.Error(e.message.toString())
         }
     }
-    suspend fun getTopRatedMovies() : ApiResponse<ListResponse>{
+    suspend fun getTopRatedMovies(page : Int) : ApiResponse<ListResponse>{
         return try{
             ApiResponse.Loading(true)
-            val movieList = api.getTopRatedMovies(API_KEY)
+            val movieList = api.getTopRatedMovies(API_KEY,page)
             if(!movieList.results.isNullOrEmpty()){
                 ApiResponse.Loading(false)
             }
@@ -33,10 +33,10 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
             ApiResponse.Error(e.message.toString())
         }
     }
-    suspend fun getNowPlayingMovies() : ApiResponse<ListResponse>{
+    suspend fun getNowPlayingMovies(page : Int) : ApiResponse<ListResponse>{
         return try{
             ApiResponse.Loading(true)
-            val movieList = api.getNowPlayingMovies(API_KEY)
+            val movieList = api.getNowPlayingMovies(API_KEY,page)
             if(!movieList.results.isNullOrEmpty()){
                 ApiResponse.Loading(false)
             }
@@ -88,7 +88,6 @@ class ApiRepository @Inject constructor(val api : TmdbApi) {
         }catch (e : Exception){
             ApiResponse.Error(e.message.toString())
         }
-
-
     }
+
 }

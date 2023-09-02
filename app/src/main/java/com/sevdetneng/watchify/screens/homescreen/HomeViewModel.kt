@@ -32,7 +32,7 @@ class HomeViewModel @Inject constructor(val repository : ApiRepository) : ViewMo
     private fun getTrendingMovies(){
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                when(val response = repository.getTrendingMovies()){
+                when(val response = repository.getTrendingMovies(page = 1)){
                     is ApiResponse.Success -> {
                         Log.d("Api","Success")
                         trendingResult.value = response.data!!
@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(val repository : ApiRepository) : ViewMo
     private fun getTopRatedMovies(){
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                when(val response = repository.getTopRatedMovies()){
+                when(val response = repository.getTopRatedMovies(page = 1)){
                     is ApiResponse.Success -> {
                         topRatedResult.value = response.data!!
                         isTopRatedLoading.value = false
@@ -70,7 +70,7 @@ class HomeViewModel @Inject constructor(val repository : ApiRepository) : ViewMo
     private fun getNowPlayingMovies(){
         viewModelScope.launch(Dispatchers.IO) {
             try{
-                when(val response = repository.getNowPlayingMovies()){
+                when(val response = repository.getNowPlayingMovies(page = 1)){
                     is ApiResponse.Success -> {
                         nowPlayingResult.value = response.data!!
                         isNowPlayingLoading.value = false
@@ -85,42 +85,4 @@ class HomeViewModel @Inject constructor(val repository : ApiRepository) : ViewMo
             }
         }
     }
-
-
-    init {
-//        getTrendingMovies()
-//        getTopRatedMovies()
-//        getNowPlayingMovies()
-    }
-
-//    private fun getTrendingMovies(){
-//        viewModelScope.launch {
-//            try{
-//                trendingResult.value = tmdbApi.getTrendingMovies(API_KEY)
-//            }catch (e : Exception){
-//                Log.d("ApiExc",e.message.toString())
-//            }
-//
-//        }
-//    }
-//    private fun getTopRatedMovies(){
-//        viewModelScope.launch {
-//            try{
-//                topRatedResult.value = tmdbApi.getTopRatedMovies(API_KEY)
-//            }catch (e : Exception){
-//                Log.d("ApiExc",e.message.toString())
-//            }
-//
-//        }
-//    }
-//    private fun getNowPlayingMovies(){
-//        viewModelScope.launch {
-//            try{
-//                nowPlayingResult.value = tmdbApi.getNowPlayingMovies(API_KEY)
-//            }catch (e : Exception){
-//                Log.d("ApiExc",e.message.toString())
-//            }
-//
-//        }
-//    }
 }

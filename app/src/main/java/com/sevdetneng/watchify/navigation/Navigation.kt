@@ -3,7 +3,6 @@ package com.sevdetneng.watchify.navigation
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
-import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,6 +12,8 @@ import com.sevdetneng.watchify.screens.detailscreen.MovieDetail
 import com.sevdetneng.watchify.screens.homescreen.HomeScreen
 import com.sevdetneng.watchify.screens.homescreen.HomeViewModel
 import com.sevdetneng.watchify.screens.loginscreen.LoginScreen
+import com.sevdetneng.watchify.screens.moviesscreen.MoviesScreen
+import com.sevdetneng.watchify.screens.moviesscreen.MoviesViewModel
 import com.sevdetneng.watchify.screens.searchscreen.SearchScreen
 import com.sevdetneng.watchify.screens.searchscreen.SearchViewModel
 import com.sevdetneng.watchify.screens.splashscreen.SplashScreen
@@ -23,6 +24,7 @@ fun Navigation(){
     val homeViewModel : HomeViewModel = hiltViewModel()
     val detailViewModel : DetailViewModel = hiltViewModel()
     val searchViewModel : SearchViewModel = hiltViewModel()
+    val moviesViewModel : MoviesViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Screens.SplashScreen.name ){
         composable(Screens.SplashScreen.name){
             SplashScreen(navController = navController)
@@ -45,6 +47,14 @@ fun Navigation(){
             }) ){backStack->
             backStack.arguments?.getInt("id").let {
                 MovieDetail(navController = navController, id = it!!,detailViewModel = detailViewModel)
+            }
+        }
+        composable(Screens.MoviesScreen.name + "/{listName}", arguments =
+        listOf(navArgument("listName"){
+            type = NavType.StringType
+        }) ){backStack->
+            backStack.arguments?.getString("listName").let {
+                MoviesScreen(navController = navController, listName = it!!,moviesViewModel)
             }
         }
     }

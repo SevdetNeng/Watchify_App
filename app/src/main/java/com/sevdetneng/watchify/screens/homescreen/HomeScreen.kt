@@ -1,27 +1,17 @@
 package com.sevdetneng.watchify.screens.homescreen
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,13 +60,17 @@ fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel = hilt
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.Start
             ) {
-                ListTitle(title = "Trending Movies")
+                ListTitle(title = "Trending Movies"){
+                    navController.navigate(Screens.MoviesScreen.name+"/trending")
+                }
                 if(!homeViewModel.isTrendingLoading.value){
                     MovieLazyRow(movies = homeViewModel.trendingResult.value.results!!, navController = navController)
                 }
 
 
-                ListTitle(title = "Top-Rated Movies")
+                ListTitle(title = "Top-Rated Movies"){
+                    navController.navigate(Screens.MoviesScreen.name+"/toprated")
+                }
                 if(!homeViewModel.isTopRatedLoading.value){
                     MovieLazyRow(movies = homeViewModel.topRatedResult.value.results!!, navController = navController)
                 }
