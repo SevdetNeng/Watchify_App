@@ -68,7 +68,7 @@ fun WatchifyBottomBar(navController: NavController,
                 Text("Search")
             }
             Column(){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screens.FavoritesScreen.name) }) {
                     if(screen=="Favorites"){
                         Icon(imageVector = Icons.Outlined.List,"List",
                             modifier = Modifier.size(35.dp),
@@ -83,7 +83,7 @@ fun WatchifyBottomBar(navController: NavController,
                 Text("My List")
             }
             Column(){
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = { navController.navigate(Screens.UserScreen.name) }) {
                     if(screen=="User"){
                         Icon(imageVector = Icons.Outlined.Person,"Person",
                             modifier = Modifier.size(35.dp),

@@ -54,13 +54,12 @@ class MoviesViewModel @Inject constructor(val repository: ApiRepository) : ViewM
                         Log.d("success",response.data?.results.toString())
                         if(currentPage==1){
                             movies.value.results = response.data!!.results
+                            isLoading.value = false
                         }else{
                             movies.value = movies.value.copy(results = movies.value.results!! + response.data!!.results!!)
-                        }
-
-                        if(movies.value.results!=null){
                             isLoading.value = false
                         }
+
                         page.intValue++
                         maxPageCount.intValue = response.data.total_pages!!-1
                         isEnd.value = false
@@ -92,7 +91,7 @@ class MoviesViewModel @Inject constructor(val repository: ApiRepository) : ViewM
                             movies.value = movies.value.copy(results = movies.value.results!! + response.data!!.results!!)
                         }
 
-                        if(movies.value.results!=null){
+                        if(response.data.results!=null){
                             isLoading.value = false
                         }
                         page.intValue++
@@ -125,7 +124,7 @@ class MoviesViewModel @Inject constructor(val repository: ApiRepository) : ViewM
                             movies.value = movies.value.copy(results = movies.value.results!! + response.data!!.results!!)
                         }
 
-                        if(movies.value.results!=null){
+                        if(response.data.results!=null){
                             isLoading.value = false
                         }
                         page.intValue++

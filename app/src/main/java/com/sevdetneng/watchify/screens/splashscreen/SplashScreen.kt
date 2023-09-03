@@ -50,11 +50,11 @@ fun SplashScreen(navController: NavController){
     }
 
     Surface(modifier = Modifier.fillMaxSize(),
-        color = Color.DarkGray){
+        color = Color(0xff111820)){
         Column(horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center){
             Surface(shape = CircleShape,
-                border = BorderStroke(2.dp, Color.Green.copy(0.8f)),
+                border = BorderStroke(2.dp, Color(0xff47a3d0)),
                 color = Color.Black,
                 modifier = Modifier
                     .size(330.dp)
@@ -62,7 +62,7 @@ fun SplashScreen(navController: NavController){
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center) {
                     Text("Watchify", style = MaterialTheme.typography.displaySmall,
-                        color = Color.Green.copy(0.7f))
+                        color = Color(0xff47a3d0))
                 }
             }
         }

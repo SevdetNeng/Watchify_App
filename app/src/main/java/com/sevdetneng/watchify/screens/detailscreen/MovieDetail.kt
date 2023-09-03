@@ -61,6 +61,7 @@ fun MovieDetail(
 
     detailViewModel.getMovieById(id)
     detailViewModel.getMovieImages(id)
+    detailViewModel.isFavorite(id)
     val movie = detailViewModel.movie.value
     val isFavorite = detailViewModel.isFavorite.value
     val images = detailViewModel.images.value
@@ -115,16 +116,20 @@ fun MovieDetail(
                         )
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        if (movie.belongs_to_collection != null) {
-                            CollectionRow(movie = movie)
-
-                        }
                         if (images.backdrops != null) {
                             DetailCarousel(
                                 backdrops = if (images.backdrops.size <= 10) images.backdrops
                                 else images.backdrops.take(10)
                             )
                         }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        if (movie.belongs_to_collection != null) {
+                            CollectionRow(movie = movie)
+
+                        }
+
                         if (movie.production_companies!!.isNotEmpty()) {
                             Row(
                                 modifier = Modifier

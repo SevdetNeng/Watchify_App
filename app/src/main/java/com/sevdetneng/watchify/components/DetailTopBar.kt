@@ -36,7 +36,7 @@ fun DetailTopBar(onBackClicked: () -> Unit = {},isFavorite : Boolean, onFavorite
             IconButton(onClick = { onFavoriteClicked() }) {
                 Icon(imageVector = Icons.Default.StarBorder,
                     contentDescription = "ArrowBack",
-                    tint = if(isFavorite) Color.Red.copy(0.4f) else Color.White,
+                    tint = if(isFavorite) Color(0xFFFF6492) else Color.White,
                     modifier = Modifier.size(25.dp))
             }
 

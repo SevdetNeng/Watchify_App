@@ -7,4 +7,6 @@ enum class Screens {
     DetailScreen,
     SearchScreen,
     MoviesScreen,
+    FavoritesScreen,
+    UserScreen
 }

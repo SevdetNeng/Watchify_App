@@ -9,6 +9,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.sevdetneng.watchify.screens.detailscreen.DetailViewModel
 import com.sevdetneng.watchify.screens.detailscreen.MovieDetail
+import com.sevdetneng.watchify.screens.favoritesscreen.FavoritesScreen
+import com.sevdetneng.watchify.screens.favoritesscreen.FavoritesViewModel
 import com.sevdetneng.watchify.screens.homescreen.HomeScreen
 import com.sevdetneng.watchify.screens.homescreen.HomeViewModel
 import com.sevdetneng.watchify.screens.loginscreen.LoginScreen
@@ -17,6 +19,8 @@ import com.sevdetneng.watchify.screens.moviesscreen.MoviesViewModel
 import com.sevdetneng.watchify.screens.searchscreen.SearchScreen
 import com.sevdetneng.watchify.screens.searchscreen.SearchViewModel
 import com.sevdetneng.watchify.screens.splashscreen.SplashScreen
+import com.sevdetneng.watchify.screens.userscreen.UserScreen
+import com.sevdetneng.watchify.screens.userscreen.UserViewModel
 
 @Composable
 fun Navigation(){
@@ -25,6 +29,8 @@ fun Navigation(){
     val detailViewModel : DetailViewModel = hiltViewModel()
     val searchViewModel : SearchViewModel = hiltViewModel()
     val moviesViewModel : MoviesViewModel = hiltViewModel()
+    val favoritesViewModel : FavoritesViewModel = hiltViewModel()
+    val userViewModel : UserViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Screens.SplashScreen.name ){
         composable(Screens.SplashScreen.name){
             SplashScreen(navController = navController)
@@ -38,6 +44,12 @@ fun Navigation(){
         }
         composable(Screens.SearchScreen.name){
             SearchScreen(navController = navController,searchViewModel)
+        }
+        composable(Screens.FavoritesScreen.name){
+            FavoritesScreen(navController = navController,favoritesViewModel)
+        }
+        composable(Screens.UserScreen.name){
+            UserScreen(navController = navController,userViewModel)
         }
 
 

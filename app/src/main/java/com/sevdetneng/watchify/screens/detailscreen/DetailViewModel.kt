@@ -33,7 +33,7 @@ class DetailViewModel @Inject constructor(val repository: ApiRepository,val fbRe
                 when(val response = repository.getMovieById(id)){
                     is ApiResponse.Success -> {
                         movie.value = response.data!!
-                        isFavorite(id)
+                        //isFavorite(id)
 
                     }
                     is ApiResponse.Error -> {
@@ -74,14 +74,16 @@ class DetailViewModel @Inject constructor(val repository: ApiRepository,val fbRe
     fun addMovieToFb(movie : FbMovie){
         viewModelScope.launch {
             fbRepository.addMovie(movie)
+            isFavorite(movie.id!!)
         }
-        isFavorite.value = true
+
     }
     fun removeMovieFromFb(id : Int){
         viewModelScope.launch {
             fbRepository.deleteMovie(id,Firebase.auth.currentUser!!.uid)
+            isFavorite(id)
         }
-        isFavorite.value = false
+
     }
 
     fun isFavorite(id : Int){

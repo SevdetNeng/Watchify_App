@@ -3,7 +3,7 @@ package com.sevdetneng.watchify.model.firebase
 import com.google.firebase.firestore.PropertyName
 
 data class FbMovie(
-    var id : Int,
+    var id : Int? = null,
 
     @get:PropertyName("user_id")
     @set:PropertyName("user_id")
